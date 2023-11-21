@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-deployment #Deployment Name
+  labels: #label for referencing this Deployment objects
+    app.kubernetes.io/name: k8s-deployment
+    app.kubernetes.io/instance: k8s-deployment
+    app.kubernetes.io/type: deployment
+spec:
+  replicas: 1 # Deployment's Replica Count
+  selector: # Select pods based on label
+    matchLabels: 
+      app.kubernetes.io/name: k8s-deployment
+      app.kubernetes.io/instance: k8s-deployment
+      app.kubernetes.io/type: pod
+  template: # Deployment's Pod Templates
+    metadata:
+      labels:
+        app.kubernetes.io/name: k8s-deployment # Pod's label
+        app.kubernetes.io/instance: k8s-deployment
+        app.kubernetes.io/type: pod
+    spec:
+      containers:
+        - name: k8s-deployment # Container name (Can be more than 1)
+          image: asia-docker.pkg.dev/arise-incubator/container-registry-sit/k8s-deployment-quiz #images registry and tag
+          imagePullPolicy: IfNotPresent
+          envFrom: #Create pod's env from k8s object
+            - configMapRef:
+                name: k8s-deployment-configmap-env
+            - secretRef:
+                name: k8s-deployment-secret-env
+          ports: # Expose pod's ports
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources: #Set CPU Limit/Request
+            limits:
+              cpu: 250m
+              memory: 512Mi
+            requests:
+              cpu: 250m
+              memory: 512Mi
+          # livenessProbe: 
+          #   httpGet: 
+          #     path: /health
+          #     port: http
+          #   initialDelaySeconds: 10
+          #   timeoutSeconds: 10
+          # readinessProbe: 
+          #   httpGet: 
+          #     path: /health
+          #     port: http
+          #   initialDelaySeconds: 10
+          #   timeoutSeconds: 10
+

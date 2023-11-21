@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - name: my-nginx
+      image: nginx
+      envFrom:
+        - configMapRef:
+            name: my-configmap
+      command: ["/bin/sh"]
+      args: ["-c", "echo '<html><head><title>Environment Name</title></head><body><b>Project Name : </b>'$PROJECT_NAME'<br><b>Environment Name : </b>'$ENVIRONMENT_NAME'</body></html>' > /usr/share/nginx/html/index.html && exec nginx -g 'daemon off;'"]
