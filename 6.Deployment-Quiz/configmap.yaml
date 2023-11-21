@@ -2,10 +2,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   labels:
-    app.kubernetes.io/name: k8s-deployment
-    app.kubernetes.io/instance: k8s-deployment
+    app.kubernetes.io/name: k8s-quiz
     app.kubernetes.io/type: secret
-  name: k8s-deployment-configmap-env
+  name: k8s-quiz-configmap-env
 data:
-  DEPLOYMENT_NAME: "k8s-deployment"
+  DEPLOYMENT_NAME: "k8s-quiz"
   HIDE_QUIZ: "true"
